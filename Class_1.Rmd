@@ -1,0 +1,107 @@
+---
+title: "Class 1 - R Syntax"
+output:
+  pdf_document: default
+  html_notebook: default
+  html_document:
+    df_print: paged
+editor_options:
+  chunk_output_type: inline
+---
+
+## Learning to code!
+For those of whom this is your first time programming, welcome! To me, programming is a tool to get the computer to do what you want (often to learn from data). I see it as an exploration tool. 
+
+This class will be as much a learning experience for me as it will be for you. I'll do my best to teach what I see as the fundamentals as clearly as possible, but let me know if there's anything that you're unsure about - and ask questions! 
+
+## Getting familiar with RStudio
+
+Four panes! Each do something different. You can move them around, but here's how mine are:
+
+1) Top-left -> "source" - this is what you write in and save to your computer. Think of this like your Word doc!
+2) Top-right -> "environment" - this is where you can see what all of your objects are. You can click on them and explore them.
+3) Bottom-left -> "console" - this shows a running log of what you've run. You can write forever up in the "source" pane, then once you run something, you see it down below.
+4) Bottom-right -> This is sort of the miscellaneous area, but very useful! It has the help pane, "viewer" for plots, and your files (so you can see what files you have in your local folder).
+
+To get familiar with RStudio, we'll first change its appearance: Tools -> Global Options -> Appearance. change whatever you'd like! I use Pastel on Dark as my editor theme - it saves your eyes :)
+
+
+Reading resources: https://bookdown.org/ndphillips/YaRrr/the-four-rstudio-windows.html
+
+
+## Object assignment
+```{r}
+"Hello world"
+
+obj1 <- "This is a string"
+
+## what class is this object?
+class(obj1)
+
+obj2 <- 9999
+class(obj2)
+
+obj3 <- iris ## iris is a built-in dataset within R
+class(iris)
+## On your own -> try opening our new iris object in the Enviroment! 
+
+obj4 <- c(1, 2, 3, 4, 5, 1000) ## a list
+obj4 == c(1:5, 1000)
+
+obj4[6]## this is called an index
+which(obj4 == 1000) ## getting the index
+
+## With your teams: make a new object called "team_names" and assign it the first names of everyone on your team as a list
+obj5 <- c("Kira", "Tebbe")
+
+## On your own -> find and understand the main data types and data structures in R. Try some new ones below!
+
+```
+
+## Messing with objects 
+```{r}
+1 + 1
+
+-500 + obj2
+
+"put us" + "together!" ## All together - let's fix this!
+paste("put us", "together", sep = " ")
+
+head(obj3)
+
+### HERE COMES THE MOST DIFFICULT BUT MOST IMPORTANT PART!! ###
+###-------- navigating matrices -> [row, column] -----------###
+obj3[1, 1]
+obj3[1, ]
+obj3[, 1]
+
+## easier to refer to columns by their name, not number
+summary(obj3$Sepal.Width)
+
+stuff <- unique(obj3$Species)
+
+obj3$Sepal.Length
+summary(obj3$Sepal.Length)
+
+## With your teams - what are three ways to find the max and min Petal Length?
+
+## THE MOST IMPORTANT THING YOU NEED TO KNOW!!! "conditional subsetting"
+just_sepal <- obj3$Sepal.Length
+just_short_sepal <- obj3[obj3$Sepal.Length <= 5, ] ## THIS IS GOLD
+
+## With your teams - get a subset of your data (all columns) where the Species is setosa and call it "setosa_data"
+setosa_data <- obj3[obj3$Species == "setosa", ]
+
+```
+
+## How to read documentation
+We'll google the examples `paste` function, both using the built-in functionality (see below) and Google. 
+
+### Fun and useful R tips!
+* Type and run `?sum` or `?head` or `?paste` in the console. You can do this for any function, command, or package to learn more. It's like built-in Google!
+* Click into the console and press the up arrow. What happened? This is useful for rerunning lines of code, or if you want to make a slight modification. 
+* Tabbing - make an object called `wow_what_a_fun_object`. Now, in either the source or console, start typing `wow_` and press tab. It auto-completes!
+* Comments (`#`) will save your life - you can document what you've done right in your code. You'll hear programmers talk about "well-commented code" - it makes it easier to follow along with what you've done, which will save you time, too. I also keep track of findings as I go in comments. 
+* Well-formatted code has lots of spaces - you can look documentation on style guides if you'd like. Everything I write here will be well styled, so just try and mimic. 
+
+

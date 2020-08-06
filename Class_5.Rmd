@@ -1,0 +1,35 @@
+---
+title: "Class 5 - Hypothesis Testing"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+## thinking through problem
+
+A large part of data exploration/analysis happens away from the computer. What's your goal? What do you want to learn? Yoou have to know what you're asking to get an answer. 
+
+Take 5 mintues to think through three hypothesis you have that you want to test. Then share them with a neighbor. 
+
+
+Now, pick one. What do you have to code to get the answer? Probably everyone should start with some summary statistics or plots, just to get a good sense of what your data looks like. 
+
+```{r}
+
+```
+
+1.	Understand your goal & know what you can/cannot change
+a.	For example, if you’re analyzing RSVP data, your goal might be to get as many sign-ups as possible. If you’re looking at a county’s yearly paying travelers, your goal might be to have as many paying travelers as possible.
+2.	Write down three assumptions or hypotheses you have about the data
+a.	I like to word things like “How does ___ affect ___?” or “How does ___ vary by ___?”. These questions will help you define what type of plot or table you’ll need to make.
+3.	Pick one to start
+a.	Pick the one that interests you the most, or you think is most important.
+4.	Draw a plot or table that would help you answer that question
+a.	Actually draw it! If it’s a table, what’s in each column? If it’s a plot, what’s on the x-axis? Y-axis? Do you have groups (e.g. multiple colors or lines)?
+5.	Look at how your data is now versus how you need it to be – think through what you might need to change
+a.	If you’re plotting, each axis/group needs its own column!
+b.	You might need more data, but that’s a separate issue
+c.	You might need to make a new table that summarizes things, but you can do that in dplyr and save the result to a new object.
+6.	Manipulate your data so that it is in the right format, and make the plot/table you want!
+a.	This is where all of the Googling happens!
+b.	This can also be where all of the frustration happens, but do your best to break it down step-by-step.

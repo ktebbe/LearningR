@@ -1,0 +1,183 @@
+---
+title: "Class 3 - Digging into data"
+output:
+  pdf_document: default
+  html_notebook: default
+editor_options:
+  chunk_output_type: inline
+---
+
+# Digging into Data
+You'll all be working with your own data, so we'll review a concept with the `iris` data set, and then you'll have a few mintues to try it on your own. We'll cover the basic ways I explore data before diving in more depth. 
+
+### Reading in data: two ways
+```{r echo = T}
+##---- for CSV files ----##
+data <- read.csv("teams.csv", as.is=T)
+
+##---- for XLSX files ----##
+#install.packages("xslx")
+library(xlsx)
+data <- read.xlsx("NAME.xlsx", sheetIndex = 1) #you want the first (or only) sheet
+  
+## for the demo
+iris_data <- iris
+
+```
+### Some mild data cleaning
+
+Open up your data from the Evnironment pane - how does it look? Do you need to fix anything?
+```{r}
+####################################################################################
+##--- Common issue #1: Column 1 is just row numbers, so let's remove it ---##
+####################################################################################
+iris_data <- iris
+iris_data <- iris_data[, -1] # the - sign just removes that column number
+
+
+
+####################################################################################
+##--- Common issue #2: The column names get messed up (usually the first one), so let's rename --##
+####################################################################################
+##--- This is optional, but essential if you need to join data together on a key (advanced)
+iris_data <- iris
+names(iris_data)[1] <- "Sepal_Length_woohoo"
+
+
+
+####################################################################################
+##--- Common issue #3: Missing data is NA when it should be 0, or 0 when it should be NA ---##
+####################################################################################
+#install.packages("visdat")
+#library(visdat)
+visdat::vis_miss(iris)
+
+
+iris_data <- iris
+## replacing all entries that are 0 to be NA instead
+iris_data$Sepal.Length[iris_data$Sepal.Length == 0] <- NA
+
+## replacing all entries that are NA to be 0 instead
+iris_data$Sepal.Length[is.na(iris_data$Sepal.Length)] <- 0
+
+
+
+####################################################################################
+##--- Common issue #4: (during analysis) oops, I deleted all my data! ----##
+####################################################################################
+
+
+iris_data <- iris_data[iris_data$Species == "Yeehaw", ] #oops!
+
+## It's ok! Just re-run the lines where you read in the data!
+
+```
+
+## Data digging - let's go!
+
+IMPORTANT: you need to keep track of interesting findings or weird results. Even something like a running page in a notebook. Lots of data analysis is exploration, so you need to ensure you're keeping track of what you've come upon. 
+
+### Comparing means across groups
+```{r}
+## loading up the right libraries
+library(dplyr)
+library(ggplot2)
+
+## I got bored with the flowers - let's use titanic data
+#install.packages("titanic")
+library(titanic)
+titanic_data <- titanic_train
+
+####################################################################################
+##----Task 1: pick a group (strings or numbers) and summarize all other numeric columns - then dig into a finding! 
+####################################################################################
+summary(titanic_data)
+
+titanic_data %>%
+  group_by(Sex) %>%
+  summarise_if(is.numeric, mean, na.rm=T)
+
+## example of digging futher into a finding - men had fewer family members - what % were alone?
+titanic_data %>%
+  count(Sex, SibSp, Parch) # this isn't that useful :(
+
+titanic_data %>%
+  group_by(Sex) %>%
+  summarize(PercentAlone = mean(SibSp == 0 & Parch == 0), 
+            NumAlone = sum(SibSp == 0 & Parch == 0), 
+            total = n()) # how many of each sex are there?
+
+## save.csv()
+
+####################################################################################
+### Copy & paste & try it on your own!
+####################################################################################
+
+```
+
+### Plotting
+```{r}
+library(dplyr)
+library(ggplot2)
+####################################################################################
+## Task 2: Scatter plots to understand relationship between variables 
+####################################################################################
+iris_data <- iris
+ggplot(data = iris_data, aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point() 
+
+ggplot(data = iris_data, aes(x = Sepal.Length, y = Petal.Length)) +
+  geom_point()
+
+ggplot(data = iris_data, aes(x = Sepal.Length, y = Petal.Length, color = Species)) +
+  geom_point()
+
+## same thing but exploring the titanic data set
+## adapted from here - https://www.kaggle.com/josepandreu/titanic-visualization-with-ggplot2
+ggplot(data = titanic_data, aes(Pclass, Age, colour = factor(Survived))) +
+    geom_jitter(size = 2) + 
+    facet_grid(Sex ~ .) + 
+    theme_light()
+
+ggplot(data = titanic_data, aes(x= Fare, Age, colour = factor(Survived))) +
+    geom_jitter(size = 2) + 
+    theme_light()
+
+
+
+####################################################################################
+## Copy & paste & try on your own!
+####################################################################################
+
+```
+
+### Making a new column
+```{r}
+####################################################################################
+## Task 3 - make a new column that you want to use in your analysis
+####################################################################################
+## copying code from Class 2
+iris_data <- iris
+iris_data$SepalSize <- "Average"
+iris_data$SepalSize[iris_data$Sepal.Length < 5.8 & iris_data$Sepal.Width < 3] <- "Small"
+iris_data$SepalSize[iris_data$Sepal.Length > 5.8 & iris_data$Sepal.Width > 3] <- "Big"
+
+## other example using titanic data
+library(titanic)
+titanic_data <- titanic_test
+
+## how does age differ among those who were alone & those who weren't?
+titanic_data$Alone <- 0
+titanic_data$Alone[titanic_data$SibSp == 0 & titanic_data$Parch == 0] <- 1
+
+titanic_data %>%
+  group_by(Alone, Sex) %>%
+  summarise(AvgAge = mean(Age, na.rm=T))
+
+
+####################################################################################
+## Make a new column & then either plot it or do some numeric summaries (recycle above code!)
+####################################################################################
+
+```
+

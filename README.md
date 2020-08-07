@@ -1,5 +1,7 @@
 # Introduction to R Class
 
+These are the lesson plans and code for a class I taught to my co-workers in May 2019. It assumes no coding experience and is desinged to help students become quickly self-sufficient and excited about continuing learning more. 
+
 Here are the lesson goals for each class:
 1. Introduction to RStudio panes and importing/viewing data.
 1. Computer science fundamentals: libraries, subsetting, conditionals, and plotting. Introduction to tidy data for Class 3.
